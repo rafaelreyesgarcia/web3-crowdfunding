@@ -3,13 +3,14 @@ import {Link, useNavigate} from 'react-router-dom'
 import {CustomButton} from './'
 import {logo, menu, search, thirdweb} from '../assets'
 import {navlinks} from '../constants'
+import {useStateContext} from '../context'
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive ] = useState('dashboard');
   const [toggleDrawer, setToggleDrawer] = useState(false);
+  const {connect, address} = useStateContext();
 
-  const address ='0x...'
   return (
     <div
       className='
@@ -17,13 +18,13 @@ const Navbar = () => {
         justify-between mb-[35px] gap-6
       '
     >
-      <div 
+      <div
         className='
           lg:flex-1 flex flex-row max-w-[458px] py-2 pl-4 pr-2 h-[52px]
           bg-[#1c1c24]
           rounded-[100px]
         '
-      > 
+      >
         <input
           type="text"
           placeholder='Search for campaigns'
@@ -39,7 +40,7 @@ const Navbar = () => {
             flex justify-center items-center cursor-pointer
           '
         >
-          <img 
+          <img
             src={search}
             alt='search'
             className='w-[15px] h-[15px] object-contain'
@@ -53,7 +54,7 @@ const Navbar = () => {
           styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd]'}
           handleClick={() => {
             if(address) navigate('create-campaign')
-            else 'connect()'
+            else connect()
           }}
         />
         <Link
@@ -70,19 +71,22 @@ const Navbar = () => {
       </div>
       {/* small screen navigation */}
       <div className='sm:hidden flex justify-between items-center relative'>
-        <div className='w-[40px] h-[40px] rounded-[10px] bg-[#2c2f32] flex justify-center items-center cursor-pointer' >
+        <div className='w-[40px] h-[40px] rounded-[10px] bg-[#2c2f32] flex justify-center items-center cursor-pointer'>
           <img src={logo} alt="user" className="w-[60%] h-[60%] object-contain" />
         </div>
         <img
           src={menu}
           alt='menu'
           className='w-[34px] h-[34px] object-contain cursor-pointer'
-          onClick={() => setToggleDrawer(!toggleDrawer)}
+          onClick={() => setToggleDrawer((prevState) => !prevState)}
         />
         <div
           className={`
-            absolute top-[60px] right-0 left-0 bg-[#1c1c24] z-10 shadow-secondary py-4
-            ${!toggleDrawer ? '-translate-y-[100vh]': 'translate-y-0 transition-all duration-700'}
+            absolute top-[60px] right-0 left-0
+            bg-[#1c1c24]
+            z-10 shadow-secondary py-4
+            ${!toggleDrawer ? '-translate-y-[100vh]': 'translate-y-0'}
+            transition-all duration-700
           `}
         >
           <ul className='mb-4'>
@@ -114,7 +118,7 @@ const Navbar = () => {
               styles={address ? 'bg-[#1dc071]' : 'bg-[#8c6dfd]'}
               handleClick={() => {
                 if(address) navigate('create-campaign')
-                else 'connect()'
+                else connect()
               }}
             />
           </div>

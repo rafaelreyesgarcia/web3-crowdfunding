@@ -5,6 +5,7 @@ import { ThirdwebProvider } from "@thirdweb-dev/react";
 import { Goerli } from "@thirdweb-dev/chains";
 import {BrowserRouter as Router} from 'react-router-dom'
 import "./styles/globals.css";
+import { StateContextProvider } from "./context";
 
 // This is the chain your dApp will work on.
 // Change this to the chain your app is built for.
@@ -16,7 +17,9 @@ root.render(
   <React.StrictMode>
     <ThirdwebProvider activeChain={Goerli}>
       <Router>
-        <App />
+        <StateContextProvider>
+          <App />
+        </StateContextProvider>
       </Router>
     </ThirdwebProvider>
   </React.StrictMode>
