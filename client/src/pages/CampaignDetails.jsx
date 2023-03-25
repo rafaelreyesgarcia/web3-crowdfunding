@@ -18,8 +18,18 @@ const CampaignDetails = () => {
 
   const fetchDonators = async () => {
     const data = await getDonations(state.pId);
-    setDonators(data);
-    console.log('donators', donators);
+    const parsedData = data.reduce((donations, {donator, donation}) => {
+      const donationNum = Number(donation);
+      const donatorObj = donations.find(obj => obj.donator === donator);
+      if(donatorObj) {
+        donatorObj.donation += donationNum;
+      } else {
+        donations.push({donator, donation: donationNum})
+      }
+      return donations;
+    }, [])
+    setDonators(parsedData);
+    console.log('donators', parsedData);
   }
 
   const handleDonate = async () => {
@@ -97,7 +107,7 @@ const CampaignDetails = () => {
                     {i + 1}. {item.donator}
                   </p>
                   <p className='font-epilogue font-normal text-[16px] text-[#b2b3bd] leading-[26px] break-11'>
-                    {item.donation} ETH
+                    {item.donation.toFixed(2)} ETH
                   </p>
                 </div>
               )): (
